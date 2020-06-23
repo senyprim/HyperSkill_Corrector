@@ -4,6 +4,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Repo {
+    public static byte changeByte(byte data,Random rnd){
+        return (byte) (data^1<<rnd.nextInt(8));
+    }
+    public static byte[] changeAllByte(byte[] data,Random rnd){
+        byte[] result=new byte[data.length];
+        for(int i=0;i<data.length;i++){
+            result[i]=changeByte(data[i],rnd);
+        }
+        return result;
+    }
     public static String replaceString="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 ";
     public static String[] splitToToken(String str, int size){
         int len=str.length()/size + (str.length()%size>0?1:0);
