@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        Hamming.fix((byte) Integer.parseInt("01000010",2));
         encode();
         send();
         decode();
@@ -21,7 +22,7 @@ public class Main {
             System.out.print(" ");
         }
         System.out.println();
-        byte[] encode = CheckSum.encode(file);
+        byte[] encode = Hamming.encode(file);
         for(byte b : encode){
             System.out.print(Integer.toBinaryString((b & 0xFF) + 0x100).substring(1));
             System.out.print(" ");
@@ -37,7 +38,7 @@ public class Main {
     }
     public static void send() throws IOException {
         byte[] file = Files.readAllBytes(Paths.get("encoded.txt"));
-        byte[] send = CheckSum.send(file,new Random());
+        byte[] send = Hamming.send(file,new Random());
         for(byte b : send){
             System.out.print(Integer.toBinaryString((b & 0xFF) + 0x100).substring(1));
             System.out.print(" ");
@@ -53,7 +54,13 @@ public class Main {
     }
     public static void decode() throws IOException {
         byte[] file = Files.readAllBytes(Paths.get("received.txt"));
-        byte[] decode = CheckSum.decode(file);
+        byte[] fix = Hamming.fix(file);
+        for(byte b : fix){
+            System.out.print(Integer.toBinaryString((b & 0xFF) + 0x100).substring(1));
+            System.out.print(" ");
+        }
+        System.out.println();
+        byte[] decode = Hamming.decode(file);
         for(byte b : decode){
             System.out.print(Integer.toBinaryString((b & 0xFF) + 0x100).substring(1));
             System.out.print(" ");
